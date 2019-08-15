@@ -1,0 +1,11 @@
+C:\Users\asus\Downloads\Dersler\7.yariyil\Optimzasiyon\Proje Odevi\NashDengesi\Nash_Algoritma\bin\Debug\netcoreapp2.1\Nash_Algoritma.deps.json
+C:\Users\asus\Downloads\Dersler\7.yariyil\Optimzasiyon\Proje Odevi\NashDengesi\Nash_Algoritma\bin\Debug\netcoreapp2.1\Nash_Algoritma.runtimeconfig.json
+C:\Users\asus\Downloads\Dersler\7.yariyil\Optimzasiyon\Proje Odevi\NashDengesi\Nash_Algoritma\bin\Debug\netcoreapp2.1\Nash_Algoritma.runtimeconfig.dev.json
+C:\Users\asus\Downloads\Dersler\7.yariyil\Optimzasiyon\Proje Odevi\NashDengesi\Nash_Algoritma\bin\Debug\netcoreapp2.1\Nash_Algoritma.dll
+C:\Users\asus\Downloads\Dersler\7.yariyil\Optimzasiyon\Proje Odevi\NashDengesi\Nash_Algoritma\bin\Debug\netcoreapp2.1\Nash_Algoritma.pdb
+C:\Users\asus\Downloads\Dersler\7.yariyil\Optimzasiyon\Proje Odevi\NashDengesi\Nash_Algoritma\obj\Debug\netcoreapp2.1\Nash_Algoritma.csprojAssemblyReference.cache
+C:\Users\asus\Downloads\Dersler\7.yariyil\Optimzasiyon\Proje Odevi\NashDengesi\Nash_Algoritma\obj\Debug\netcoreapp2.1\Nash_Algoritma.csproj.CoreCompileInputs.cache
+C:\Users\asus\Downloads\Dersler\7.yariyil\Optimzasiyon\Proje Odevi\NashDengesi\Nash_Algoritma\obj\Debug\netcoreapp2.1\Nash_Algoritma.AssemblyInfoInputs.cache
+C:\Users\asus\Downloads\Dersler\7.yariyil\Optimzasiyon\Proje Odevi\NashDengesi\Nash_Algoritma\obj\Debug\netcoreapp2.1\Nash_Algoritma.AssemblyInfo.cs
+C:\Users\asus\Downloads\Dersler\7.yariyil\Optimzasiyon\Proje Odevi\NashDengesi\Nash_Algoritma\obj\Debug\netcoreapp2.1\Nash_Algoritma.dll
+C:\Users\asus\Downloads\Dersler\7.yariyil\Optimzasiyon\Proje Odevi\NashDengesi\Nash_Algoritma\obj\Debug\netcoreapp2.1\Nash_Algoritma.pdb

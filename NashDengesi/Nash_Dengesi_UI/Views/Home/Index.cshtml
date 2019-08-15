@@ -1,0 +1,502 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<div class="container-fluid">
+
+    <div class="row-mCenter">
+        <div class="col-lg-6">
+            <h3><span class="text-success">First Player</span></h3>
+
+            <label>Player 1 strategy Number : </label>
+            <input type="text" name="Strateji Sayisi" value="2" id="rows" style="width:50px">(rows)<br /><br />
+            <label>Player 1 strategy Names exp:(X Y Z) : </label>
+            <input type="text" name="Strateji Adlari" id="row_strategiNames" value="X Y">
+
+
+        </div>
+
+        <div class="col-lg-6">
+            <h3><span class="text-success">İkinci Oyuncu</span></h3>
+
+            <label>Player 2 strategy Number : </label>
+            <input type="text" name="Strateji Sayisi" value="2" id="columns" style="width:50px">(colons)<br /><br />
+            <label>Player 2 strategy Names exp:(A B C) : </label>
+            <input type="text" name="Strateji Adlari" id="Col_strategiNames" value="A B">
+        </div>
+
+
+    </div>
+
+    <div class="row-mCenter">
+        <div class="col-lg-12" style="align-content:center; margin:20px 0 20px 0">
+            <button id="matrisOlustur">Create Payment Matrix</button>
+        </div>
+    </div>
+
+
+    <div class="row-mCenter" style="margin-top:20px">
+        <div class="col-lg-6">
+            <div class="container-fluid" style="border:1px solid #cecece;padding-bottom:20px">
+                <form id="inputFieldFirst" role="form">
+                    <br />
+                    <input type="text" id="FP00" value="0" size="3" />
+                    <input type="text" id="FP01" value="0" size="3" />
+                    <br>
+                    <input type="text" id="FP10" value="0" size="3" />
+                    <input type="text" id="FP11" value="0" size="3" />
+                    <br>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="container-fluid" style="border:1px solid #cecece;padding-bottom:20px">
+                <form id="inputFieldSecond" role="form">
+                    <br />
+                    <input type="text" id="SP00" value="0" size="3" />
+                    <input type="text" id="SP01" value="0" size="3" />
+                    <br>
+                    <input type="text" id="SP10" value="0" size="3" />
+                    <input type="text" id="SP11" value="0" size="3" />
+                    <br>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-mCenter">
+        <div class="col-lg-6" style="align-content:center; margin-top:20px">
+            <button id="showMatrixTable"><i class="fa fa-play"></i>Show Matrix</button>
+        </div>
+        <div class="col-lg-6" style="align-content:center; margin-top:20px">
+            <button id="NashCalculate"><i class="fa fa-play"></i>Calculate Nash equilibrium</button>
+        </div>
+    </div>
+
+    <div class="row-mCenter">
+        <div class="col-lg-6" style="margin-top:20px">
+            <div id="MatrisTable">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 15%">P1 , P2</th>
+                            <th scope="col">A </th>
+                            <th scope="col">B</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">x</th>
+                            <td>0 , 0</td>
+                            <td>0 , 0</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Y</th>
+                            <td>0 , 0</td>
+                            <td>0 , 0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-6" style="margin-top:20px">
+
+            <div class="row">
+                <div class="col-lg-6 oyuncuOdemeMatris">
+                    <h4>First Player Payment Matrix</h4>
+                    <table class="table table-bordered" id="BirinciOyuncuMatris"></table>
+                </div>
+                <div class="col-lg-6 oyuncuOdemeMatris">
+                    <h4>Second Player Payment Matrix</h4>
+                    <table class="table table-bordered" id="IkinciOyuncuMatris"></table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 oyuncuOdemeMatris">
+                    <h4>Nash equilibrium Matrix</h4>
+                    <table class="table table-bordered" id="SonucOyuncuMatris"></table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 oyuncuOdemeMatris">
+                    <h4>Probable Variables Matrix</h4>
+                    <div id="ihtimalMatris"></div>
+                </div>
+                <div class="col-lg-6 oyuncuOdemeMatris">
+                    <h4>Expected Earnings Account</h4>
+                    <div id="beklenenNashDengeKazanc"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<style>
+    .container {
+        margin-top: 20px;
+    }
+    .mCenter {
+        float: none;
+        margin: 0 auto;
+    }
+    th {
+        padding: 0px 0px 0px 50px;
+    }
+</style>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('.oyuncuOdemeMatris').hide();
+
+        $("#matrisOlustur").click(function () {
+
+            $("#inputFieldFirst").html('');
+            $("#inputFieldSecond").html('');
+            //debugger
+            var firstMatrisContent = '<br />';
+            var secondMatrisContent = '<br />';
+
+            var columns = $('#columns').val();
+            var rows = $('#rows').val();
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < columns; j++) {
+                    firstMatrisContent += '<input type="text" value="0" name="field' + i + '" id="FP' + i + '' + j + '" size="3" style="margin-right:2px;margin-bottom:2px" />';
+                    secondMatrisContent += '<input type="text" value="0" name="field' + i + '" id="SP' + i + '' + j + '" size="3" style="margin-right:2px;margin-bottom:2px" />'
+                }
+                firstMatrisContent += '<br/>';
+                secondMatrisContent += '<br/>'
+            }
+
+            $("#inputFieldFirst").html(firstMatrisContent);
+            $("#inputFieldSecond").html(secondMatrisContent);
+        });
+
+
+        
+
+        $("#NashCalculate").click(function () {
+
+          
+            let FirstPlayerPayoFF = '';
+            let SecondPlayerPayoFF = '';
+
+            let columns = $('#columns').val();
+            let rows = $('#rows').val();
+
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < columns; j++) {
+                   
+
+                    if (i == parseInt(rows) - 1 && j == parseInt(columns) - 1) {
+                        FirstPlayerPayoFF += $('#FP' + i + '' + j + '').val() ;
+                        SecondPlayerPayoFF += $('#SP' + i + '' + j + '').val() ;
+                    }
+                    else {
+                        FirstPlayerPayoFF += $('#FP' + i + '' + j + '').val() + ",";
+                        SecondPlayerPayoFF += $('#SP' + i + '' + j + '').val() + ",";
+                    }
+
+                }
+            }
+
+          
+            var params =({
+                _firstPlayerPayOff: FirstPlayerPayoFF,
+                _SecondPlayerPayOff: SecondPlayerPayoFF,
+                _rows: rows,
+                _columns: columns
+            });
+
+            $.ajax({
+                type: "Get",
+                dataType: "json",
+                data: params,
+                contentType: 'application/json; charset=utf-8',
+                url: '/Home/computeNashEq',
+                success: function (data) {
+                    debugger
+                    ResultModali(data.Nashresult, data.isMixed, data.fp_NashIndex, data.Sp_NashIndex, FirstPlayerPayoFF, SecondPlayerPayoFF);
+                    
+                   // alert(result);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    window.location.replace(window.location.href);
+                }
+                
+            });
+
+        });
+
+        $("#showMatrixTable").click(function () {
+
+            $("#MatrisTable").html('');
+
+            let columns = $('#columns').val();
+            let rows = $('#rows').val();
+            let col_strategiName = $("#Col_strategiNames").val().split(' ');
+            let row_strategiName = $("#row_strategiNames").val().split(' ');
+
+            let tableContent = '<table class="table table-bordered">';
+               tableContent += '<thead>' +
+                                '<tr>'+
+                                '<th scope="col" style="width: 15%">P1 , P2</th>';
+
+
+            for (let i = 0; i < columns; i++)
+            {
+                tableContent += '<th scope="col">' + col_strategiName[i] +'</th>'
+            }
+
+            tableContent += '</tr>' +
+                            '</thead>';
+
+            tableContent += '<tbody>'
+
+            for (let i = 0; i < rows; i++)
+            {
+                tableContent += '<tr>';
+                tableContent += '<th scope="row">' + row_strategiName[i]+'</th>'
+                for (let j = 0; j < columns; j++)
+                {
+                    tableContent += '<th scope="row">' + $('#FP' + i + '' + j + '').val() + ' , ' + $('#SP' + i + '' + j + '').val() + '</th>'
+                }
+
+                tableContent += '</tr>';
+            }
+
+            tableContent += '</tbody>';
+            tableContent += '</table>';
+
+            $("#MatrisTable").append(tableContent);
+        });
+
+        //ResultModali(2, 3);
+
+        function ResultModali(result,isMixed, fp_NashIndex, Sp_NashIndex,firsPl,SecondPl)
+        {
+            $('.oyuncuOdemeMatris').show();
+
+            oyuncularMatrisTabloDuzenle("P1", "#BirinciOyuncuMatris", "#FP");
+            oyuncularMatrisTabloDuzenle("P2", "#IkinciOyuncuMatris", "#SP");
+
+            sonucOyuncuMatrisTabloDuzenle(fp_NashIndex, Sp_NashIndex);
+
+            if (isMixed) {
+                karmaStrategiDuzenle();
+
+                var firsSplite = firsPl.split(",");
+                var SecdSplite = SecondPl.split(",");
+
+
+                let content = '<p>';
+
+                content += firsSplite[0] + '* p +' + firsSplite[1] + ' * (1-p) = ' + firsSplite[2] + ' * p + ' + firsSplite[3] + ' * (1-p)';
+                content += '</br>';
+                content += SecdSplite[0] + '* q +' + SecdSplite[1] + ' * (1-q) = ' + SecdSplite[2] + ' * q + ' + SecdSplite[3] + ' * (1-q)';
+                content += '</br></br>';
+                content += 'Sonuc:</br>';
+                content += 'Birinci Oyun Bek nash Denge Kazanci: ' + result[0];
+                content += '</br>';
+                content += 'Ikinci  Oyun Bek nash Denge Kazanci: ' + result[1];
+                content += '</p>';
+
+                $('#beklenenNashDengeKazanc').html(content);
+            }
+            else
+            {
+                $("#ihtimalMatris").html('');
+
+                let content = '<p>';
+                
+                content += 'Sonuc:</br>';
+
+                for (let i = 0; i < result.length; i++) {
+                    content += 'Nash Dengesi: ' + result[i];
+                    content += '</br>';
+                }
+               
+                content += '</p>';
+
+                $('#beklenenNashDengeKazanc').html(content);
+            }
+
+        }
+
+        function oyuncularMatrisTabloDuzenle(oyuncu, tabloID, oyuncuDegerID)
+        {
+            $(tabloID).html('');
+
+            let columns = $('#columns').val();
+            let rows = $('#rows').val();
+            let col_strategiName = $("#Col_strategiNames").val().split(' ');
+            let row_strategiName = $("#row_strategiNames").val().split(' ');
+
+            
+            let tableContent = '<thead>' +
+                '<tr>' +
+                '<th scope="col" style="width: 15%">' + oyuncu +'</th>';
+
+
+            for (let i = 0; i < columns; i++) {
+                tableContent += '<th scope="col">' + col_strategiName[i] + '</th>'
+            }
+
+            tableContent += '</tr>' +
+                '</thead>';
+
+            tableContent += '<tbody>'
+
+            for (let i = 0; i < rows; i++) {
+                tableContent += '<tr>';
+                tableContent += '<th scope="row">' + row_strategiName[i] + '</th>'
+                for (let j = 0; j < columns; j++) {
+                    tableContent += '<th scope="row">' + $(oyuncuDegerID + i + '' + j + '').val() +  '</th>'
+                }
+
+                tableContent += '</tr>';
+            }
+
+            tableContent += '</tbody>';
+
+            $(tabloID).append(tableContent);
+        }
+
+        function sonucOyuncuMatrisTabloDuzenle(BirOyuncuDolgu, IkinciOyuncuDolgu)
+        {
+            $("#SonucOyuncuMatris").html('');
+            debugger
+            let columns = $('#columns').val();
+            let rows = $('#rows').val();
+            let col_strategiName = $("#Col_strategiNames").val().split(' ');
+            let row_strategiName = $("#row_strategiNames").val().split(' ');
+
+         
+            let tableContent = '<thead>' +
+                '<tr>' +
+                '<th scope="col" style="width: 15%">P1 , P2</th>';
+
+
+            for (let i = 0; i < columns; i++) {
+                tableContent += '<th scope="col">' + col_strategiName[i] + '</th>'
+            }
+
+            tableContent += '</tr>' +
+                '</thead>';
+
+            tableContent += '<tbody>'
+
+            for (let i = 0; i < rows; i++) {
+                tableContent += '<tr>';
+                tableContent += '<th scope="row">' + row_strategiName[i] + '</th>'
+                for (let j = 0; j < columns; j++) {
+                   
+
+                    let subContent = '<td>';
+                    let indexStr = i + ',' + j; 
+
+                    if (isBigIndex(indexStr, BirOyuncuDolgu)) {
+                        subContent += '<span style="background-color:yellow">' + $('#FP' + i + '' + j + '').val() + '</span>';
+                    }
+                    else {
+                        subContent += '<span>' + $('#FP' + i + '' + j + '').val() + '</span>';
+                    }
+
+                    if (isBigIndex(indexStr, IkinciOyuncuDolgu)) {
+                        subContent += ' , <span style="background-color:yellow">' + $('#SP' + i + '' + j + '').val() + '</span>';
+                    }
+                    else {
+                        subContent += ' , <span>' + $('#SP' + i + '' + j + '').val() + '</span>';
+                    }
+                    subContent += '</td>';
+
+                    tableContent += subContent;
+                }
+
+                tableContent += '</tr>';
+            }
+
+            tableContent += '</tbody>';
+
+            $("#SonucOyuncuMatris").append(tableContent);
+        }
+
+        function isBigIndex(index, indexlist)
+        {
+            debugger
+            let isInindex = false;
+
+            for (let i = 0; i < indexlist.length; i++)
+            {
+                if (index == indexlist[i])
+                {
+                    isInindex = true;
+                }
+            }
+            return isInindex;
+        }
+
+        function karmaStrategiDuzenle()
+        {
+            $("#ihtimalMatris").html('');
+
+            let columns = $('#columns').val();
+            let rows = $('#rows').val();
+            let col_strategiName = $("#Col_strategiNames").val().split(' ');
+            let row_strategiName = $("#row_strategiNames").val().split(' ');
+
+            let tableContent = '<table class="table table-bordered">';
+            tableContent += '<thead>' +
+                '<tr>' +
+                '<th scope="col">p1,p2</th>';
+
+
+            for (let i = 0; i < columns; i++) {
+              
+                if (i == 0) {
+                    tableContent += '<th scope="col">' + col_strategiName[i] + ' , P </th>';
+                }
+                else {
+                    tableContent += '<th scope="col">' + col_strategiName[i] + ' , 1-p</th>';
+                }
+            }
+
+            tableContent += '</tr>' +
+                '</thead>';
+
+            tableContent += '<tbody>'
+
+            for (let i = 0; i < rows; i++) {
+                tableContent += '<tr>';
+               
+
+                if (i == 0) {
+                    tableContent += '<th scope="row">' + row_strategiName[i] + ' , q</th>';
+                }
+                else {
+                    tableContent += '<th scope="row">' + row_strategiName[i] + ' , 1-q</th>';
+                }
+
+                for (let j = 0; j < columns; j++) {
+                    tableContent += '<th scope="row">' + $('#FP' + i + '' + j + '').val() + ' , ' + $('#SP' + i + '' + j + '').val() + '</th>'
+                }
+
+                tableContent += '</tr>';
+            }
+
+            tableContent += '</tbody>';
+            tableContent += '</table>';
+
+            $("#ihtimalMatris").append(tableContent);
+        }
+
+    });
+</script>
